@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lalaangan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/slide.css">
+  <link rel="stylesheet" href="css/status.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/creature-tap.css">
+</head>
+<body data-page="home">
+  <main class="shell loading-screen" id="loading-screen">
+
+    <div class="logo" id="logo"><img src="assets/images/logo.png" alt="Lalaangan"></div>
+
+    <div class="loader">
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar">
+        <div class="bar-fill" id="bar-fill"></div>
+        <span class="bar-label" id="bar-label">Loading... 0%</span>
+      </div>
+      <p class="tip" id="tip" aria-live="polite"></p>
+      <p class="hint" id="hint">Tap anywhere for the next tip</p>
+      <p class="play" id="play" hidden>Tap to play</p>
+    </div>
+
+  </main>
+
+  <!-- Home screen (from wireframe). Emoji icons and the grey creature are placeholders -->
+  <section class="next-screen home" id="next-screen" aria-hidden="true">
+    <div class="shell home__inner">
+      <div class="home__main" data-slide>
+
+        <header class="hd">
+          <div class="status">
+            <button class="status__lv" type="button" aria-label="Profile" data-tab="profile">
+              <span>👤</span>
+              <span class="status__badge" data-status="level"></span>
+            </button>
+            <div class="status__streak"><span>🔥</span> <span data-status="streak"></span></div>
+          </div>
+        </header>
+
+        <div class="home__body">
+
+        <div class="creature-wrap">
+          <!-- Real creature art: shown (and made tappable) once assets/creatures/creature-01.png exists -->
+          <img id="creature-img" class="creature-img" src="assets/creatures/creature-01.png" alt="Your creature" width="190" hidden>
+          <div class="creature" id="creature-placeholder" aria-hidden="true">
+            <i class="creature__arm creature__arm--l"></i>
+            <i class="creature__arm creature__arm--r"></i>
+            <i class="creature__body"></i>
+            <i class="creature__leg creature__leg--l"></i>
+            <i class="creature__leg creature__leg--r"></i>
+          </div>
+          <h2 class="creature-name" data-field="creature"></h2>
+          <p class="creature-mood">☺ <span data-field="mood"></span></p>
+        </div>
+
+        <button class="hiding" type="button">
+          <span>📍 <span data-field="hiding"></span></span><span>›</span>
+        </button>
+
+        <section class="card">
+          <div class="stats">
+            <div><small>Distance walked</small><strong data-field="distance"></strong></div>
+            <div class="right"><small>Steps today</small><strong data-field="steps"></strong></div>
+          </div>
+          <div class="goal-row"><small>Daily goal</small><small data-field="goalText"></small></div>
+          <div class="goal-bar"><div class="goal-bar__fill" id="goal-fill"></div></div>
+        </section>
+
+        <section class="card">
+          <small>Milestones and rewards</small>
+          <div class="milestones">
+            <div class="track">
+              <div class="track__fill" id="milestone-fill"></div>
+              <i class="node" style="left:25%"></i>
+              <i class="node" style="left:50%"></i>
+              <i class="node" style="left:75%"></i>
+            </div>
+            <button class="gift" type="button" aria-label="Claim reward">🎁</button>
+          </div>
+        </section>
+
+        <button class="place" type="button">
+          <span class="place__text">
+            <small>Did You Know?</small>
+            <strong data-field="didYouKnow"></strong>
+          </span>
+          <span>›</span>
+        </button>
+
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main">
+        <a href="home.html#home" class="nav-item is-on" aria-current="page" data-tab="home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12H3l9-9 9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6h6v6"/></svg>
+          <span>Home</span>
+        </a>
+        <a href="collection.html" class="nav-item" data-tab="collection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19a2 2 0 0 1 2-2h14V4H5a2 2 0 0 0-2 2v13z"/><path d="M19 17v4H5a2 2 0 0 1 0-4"/><path d="M9 7h6"/></svg>
+          <span>Collection</span>
+        </a>
+        <a href="map.html" class="nav-item" data-tab="map">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 7v13l6-3 6 3 6-3V4l-6 3-6-3z"/><path d="M9 4v13M15 7v13"/></svg>
+          <span>Map</span>
+        </a>
+        <a href="quests.html" class="nav-item" data-tab="quests">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+          <span>Quests</span>
+        </a>
+        <a href="profile.html" class="nav-item" data-tab="profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <script src="js/nav.js"></script>
+  <script src="js/sfx.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/status.js"></script>
+  <script src="js/activity.js"></script>
+  <script src="js/creature-tap.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

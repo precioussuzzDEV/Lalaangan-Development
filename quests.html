@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f9ecd9">
+<title>Lalaangan — Quests</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/quests.css">
+<link rel="stylesheet" href="css/slide.css">
+<link rel="stylesheet" href="css/status.css">
+<link rel="stylesheet" href="css/navbar.css">
+</head>
+<body data-page="quests">
+
+<div class="shell">
+
+  <main class="screen" data-slide>
+
+    <header class="hd">
+      <div class="status">
+        <button class="status__lv" type="button" aria-label="Profile" data-tab="profile">
+          <span>👤</span>
+          <span class="status__badge" data-status="level"></span>
+        </button>
+        <div class="status__streak"><span>🔥</span> <span data-status="streak"></span></div>
+      </div>
+
+      <div class="hd-top">
+        <h1>Quests</h1>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <section class="reward" aria-labelledby="rewardName">
+        <div class="reward__tag">Reward of the month</div>
+        <div class="reward__icon">
+          <div class="reward__badge">
+            <!-- Placeholder wearable icon: replace with your wearable art -->
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15c0-4.5 3.6-8 8-8s8 3.5 8 8"/><path d="M3 15h18"/><path d="M9 7.5l1 7.5M15 7.5l-1 7.5M12 7v8"/></svg>
+          </div>
+        </div>
+        <div class="reward__body">
+          <div class="reward__head">
+            <span id="rewardName" class="reward__name">Penyu Shell Cap</span>
+            <span class="rarity rarity--rare">Rare</span>
+          </div>
+          <p class="reward__desc">Finish 20 quests this October to unlock this wearable.</p>
+          <div class="bar"><div class="bar__fill bar__fill--accent" id="rewardBar"></div></div>
+          <div class="reward__meta">
+            <span><b id="rewardCount">13</b> / <span id="rewardGoal">20</span> quests</span>
+            <span id="rewardDays">18 days left</span>
+          </div>
+        </div>
+      </section>
+
+      <nav class="tabs" id="tabs" aria-label="Quest type"></nav>
+
+      <section class="trail" aria-label="Quest list">
+        <div class="trail__line" aria-hidden="true"></div>
+        <ol class="trail__list" id="questList"></ol>
+        <p class="empty" id="emptyState" hidden>No quests here yet. Check back tomorrow.</p>
+      </section>
+
+    </div>
+
+  </main>
+
+  <nav class="nav" aria-label="Main">
+    <a href="home.html#home" class="nav-item" data-tab="home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12H3l9-9 9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6h6v6"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="collection.html" class="nav-item" data-tab="collection">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19a2 2 0 0 1 2-2h14V4H5a2 2 0 0 0-2 2v13z"/><path d="M19 17v4H5a2 2 0 0 1 0-4"/><path d="M9 7h6"/></svg>
+      <span>Collection</span>
+    </a>
+    <a href="map.html" class="nav-item" data-tab="map">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 7v13l6-3 6 3 6-3V4l-6 3-6-3z"/><path d="M9 4v13M15 7v13"/></svg>
+      <span>Map</span>
+    </a>
+    <a href="quests.html" class="nav-item is-on" aria-current="page" data-tab="quests">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+      <span>Quests</span>
+    </a>
+    <a href="profile.html" class="nav-item" data-tab="profile">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</div>
+
+<script src="js/nav.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/music.js"></script>
+<script src="js/status.js"></script>
+<script src="js/activity.js"></script>
+<script src="js/quests.js"></script>
+</body>
+</html>

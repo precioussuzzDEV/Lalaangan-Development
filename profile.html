@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lalaangan – Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/slide.css">
+<link rel="stylesheet" href="css/navbar.css">
+<style>
+  /* Colours, phone frame and bottom nav come from css/theme.css.
+     These names map onto the shared tokens so the rest of this file stays as is. */
+  :root{
+    --bg-2:var(--bg-soft);
+    --card-line:var(--line);
+    --lantern:var(--accent);
+    --lantern-2:#d9822f;
+    --text:var(--ink);
+    --muted:var(--sub);
+    --leaf:var(--r-uncommon);
+    --shadow:none;
+  }
+  *{-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{overflow:hidden}
+  /* header stays put; only .scroll (the cards) scrolls, above the nav */
+  .app{flex:1;min-height:0;width:100%;position:relative;padding:16px 16px 0;
+    display:flex;flex-direction:column}
+  .topbar{flex-shrink:0}
+  .scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+    margin:0 -16px;padding:0 16px 24px;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+  h1,h2,.num{font-weight:600}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+  /* ---------- top bar ---------- */
+  .topbar{display:flex;justify-content:flex-end}
+  .icon-btn{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--card);border:1.5px solid var(--card-line);
+    display:grid;place-items:center;box-shadow:var(--shadow);
+    transition:transform .15s;
+  }
+  .icon-btn:active{transform:scale(.92)}
+  .icon-btn svg{width:22px;height:22px;stroke:var(--lantern)}
+
+  /* ---------- header ---------- */
+  .header{display:flex;gap:14px;align-items:center;margin-top:8px}
+  .avatar{
+    width:112px;height:112px;flex-shrink:0;border-radius:22px;
+    background:var(--card);
+    border:2px solid var(--lantern);
+    box-shadow:0 0 18px -6px var(--lantern);
+    display:grid;place-items:center;overflow:hidden;position:relative;
+  }
+  .avatar svg{width:78%;height:78%}
+  .info{flex:1;min-width:0}
+  .name-row{display:flex;align-items:center;gap:6px}
+  .name-row h1{font-size:22px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .name-row input{
+    font:inherit;font-size:20px;font-weight:600;
+    background:var(--bg-2);color:var(--text);border:1.5px solid var(--lantern);
+    border-radius:8px;padding:2px 8px;width:100%;outline:none;
+  }
+  .edit-btn svg{width:18px;height:18px;stroke:var(--lantern)}
+  .tagline{color:var(--muted);font-size:13px;margin-top:2px}
+  .id-row{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-top:4px}
+  .id-row code{font-family:monospace;color:var(--text)}
+  .id-row svg{width:16px;height:16px;stroke:var(--muted)}
+  .level{margin-top:10px;font-weight:600;font-size:15px;color:var(--lantern)}
+  .bar{height:12px;background:var(--bg-2);border-radius:99px;margin-top:5px;overflow:hidden;border:1px solid var(--card-line)}
+  .bar span{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--lantern-2),var(--lantern));
+    box-shadow:0 0 10px var(--lantern);transition:width 1.2s ease}
+  .pill{
+    display:inline-block;margin-top:7px;font-size:11.5px;font-weight:700;
+    background:rgba(240,160,75,.18);color:var(--lantern-2);
+    border:1px solid var(--card-line);border-radius:99px;padding:3px 10px;
+  }
+
+  /* ---------- cards ---------- */
+  .card{
+    background:var(--card);border:1.5px solid var(--card-line);
+    border-radius:var(--radius);box-shadow:var(--shadow);margin-top:16px;
+  }
+
+  /* banner */
+  .banner{
+    height:150px;position:relative;overflow:hidden;padding:20px;
+    background:linear-gradient(180deg,#bfe3f2 0%,#f9e3b8 60%,#cfe8b5 100%);
+  }
+  .banner h2{position:relative;z-index:2;font-size:19px;font-weight:600;line-height:1.3;max-width:55%}
+  .banner .hills{position:absolute;inset:auto 0 0 0;width:100%;height:80px}
+  .banner .moon{position:absolute;top:16px;left:58%;width:22px;height:22px;border-radius:50%;
+    background:var(--lantern);box-shadow:0 0 20px var(--lantern)}
+  .banner .creature{position:absolute;right:10px;bottom:-6px;width:120px;z-index:2;
+    animation:bob 3s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-5px)}}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);padding:14px 4px}
+  .stat{text-align:center;padding:4px 2px;border-right:1px solid var(--card-line)}
+  .stat:last-child{border-right:none}
+  .stat svg{width:26px;height:26px;stroke:var(--lantern);margin-bottom:4px}
+  .stat .num{display:block;font-size:19px;font-weight:600}
+  .stat small{font-size:11.5px;color:var(--muted)}
+
+  /* favourite creature */
+  .section{padding:16px}
+  .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .section-head h2{font-size:18px;font-weight:600}
+  .link{font-size:13px;color:var(--lantern);display:flex;align-items:center;gap:2px}
+  .fav{display:flex;align-items:center;gap:14px;width:100%;text-align:left}
+  .fav-img{width:72px;height:72px;border-radius:16px;flex-shrink:0;
+    background:radial-gradient(circle,var(--sil-mark),var(--card));border:1.5px solid var(--card-line);
+    display:grid;place-items:center}
+  .fav-img svg{width:62px}
+  .fav-text{flex:1}
+  .fav-text strong{font-size:17px;font-weight:600;display:block}
+  .fav-text span{font-size:12.5px;color:var(--muted)}
+  .rarity{display:inline-block;margin-top:4px;font-size:10.5px;font-weight:700;letter-spacing:.5px;
+    color:var(--leaf);border:1px solid var(--leaf);border-radius:99px;padding:1px 8px}
+  .chev{width:22px;height:22px;stroke:var(--text)}
+
+  /* achievements */
+  .badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+  .badge{display:flex;flex-direction:column;align-items:center}
+  .hex{width:68px;height:76px;position:relative;display:grid;place-items:center;margin-bottom:6px}
+  .hex svg.shape{position:absolute;inset:0;width:100%;height:100%}
+  .hex svg.ico{width:28px;height:28px;position:relative;z-index:1}
+  .badge b{font-size:12.5px;font-weight:700}
+  .badge small{font-size:11px;color:var(--muted)}
+  .badge.done small{color:var(--leaf)}
+  .badge .mini{width:52px;height:4px;background:var(--bg-2);border-radius:99px;margin-top:4px;overflow:hidden}
+  .badge .mini span{display:block;height:100%;background:var(--lantern)}
+
+  /* toast */
+  .toast{position:absolute;left:50%;bottom:96px;transform:translate(-50%,20px);
+    background:var(--lantern);color:var(--accent-ink);font-weight:700;font-size:13px;
+    padding:8px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* page fade-in to match the loading → screen transition */
+  .app{animation:fadeIn .5s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body data-page="profile">
+<div class="shell">
+<div class="app" data-slide>
+
+  <!-- Settings -->
+  <div class="topbar">
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+
+  <!-- Everything below the settings button scrolls, profile header included -->
+  <main class="scroll">
+
+  <!-- Header -->
+  <section class="header">
+    <div class="avatar">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="36" r="20" fill="#cdb591"/><path d="M14 92c4-22 18-32 36-32s32 10 36 32z" fill="#cdb591"/></svg>
+    </div>
+    <div class="info">
+      <div class="name-row" id="nameRow">
+        <h1 id="playerName">Explorer</h1>
+        <button class="edit-btn" id="editBtn" aria-label="Edit name">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        </button>
+      </div>
+      <p class="tagline" id="playerTitle">Kuala Penyu Wanderer</p>
+      <div class="id-row">ID: <code id="playerId"></code>
+        <button id="copyBtn" aria-label="Copy ID">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <div class="level" id="levelText">LEVEL 2</div>
+      <div class="bar"><span id="levelBar"></span></div>
+      <span class="pill" id="stepsToLevel"></span>
+    </div>
+  </section>
+
+  <!-- Banner -->
+  <section class="card banner">
+    <div class="moon"></div>
+    <h2>Your journey in Sabah continues!</h2>
+    <svg class="hills" viewBox="0 0 400 80" preserveAspectRatio="none">
+      <path d="M0 50 Q80 10 160 45 T320 35 T400 40 V80 H0z" fill="#9fcf9a" opacity=".8"/>
+      <path d="M0 65 Q100 35 200 60 T400 55 V80 H0z" fill="#7fb77f"/>
+    </svg>
+    <!-- placeholder creature (original design) -->
+    <svg class="creature" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="108" rx="34" ry="6" fill="rgba(0,0,0,.25)"/>
+      <path d="M28 40 L22 8 L48 30z" fill="#c88a5a"/><path d="M92 40 L98 8 L72 30z" fill="#c88a5a"/>
+      <ellipse cx="60" cy="80" rx="32" ry="28" fill="#d99b68"/>
+      <circle cx="60" cy="52" r="30" fill="#e3a874"/>
+      <ellipse cx="60" cy="88" rx="17" ry="14" fill="#f6e3cc"/>
+      <circle cx="48" cy="52" r="8" fill="#1a1a2e"/><circle cx="72" cy="52" r="8" fill="#1a1a2e"/>
+      <circle cx="50.5" cy="49.5" r="2.8" fill="#fff"/><circle cx="74.5" cy="49.5" r="2.8" fill="#fff"/>
+      <ellipse cx="60" cy="63" rx="3" ry="2" fill="#5a3a2a"/>
+      <circle cx="40" cy="63" r="4" fill="#ff9f8a" opacity=".6"/><circle cx="80" cy="63" r="4" fill="#ff9f8a" opacity=".6"/>
+    </svg>
+  </section>
+
+  <!-- Stats -->
+  <section class="card stats">
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.4C4 11.5 3 10.5 3 8c0-2.7 1.5-6 4.5-6C9.4 2 10 3.8 10 5.5c0 3.1-2 5.7-2 8.7V16a2 2 0 1 1-4 0z"/><path d="M20 20v-2.4c0-2.1 1-3.1 1-5.6 0-2.7-1.5-6-4.5-6C14.6 6 14 7.8 14 9.5c0 3.1 2 5.7 2 8.7V20a2 2 0 1 0 4 0z"/></svg>
+      <span class="num" id="statSteps">0</span><small>Steps</small>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span class="num" id="statDist">0</span><small>Distance</small>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3.2.3 1.3 1.2 2.7 2.5 2.7z"/></svg>
+      <span class="num" id="statCal">0</span><small>Calories</small>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>
+      <span class="num" id="statLoc">0</span><small>Locations</small>
+    </div>
+  </section>
+
+  <!-- Favourite creature -->
+  <section class="card section">
+    <div class="section-head"><h2>Favourite Creature</h2></div>
+    <button class="fav" onclick="window.Lalaangan && Lalaangan.goTo ? Lalaangan.goTo('collection.html') : (location.href='collection.html')">
+      <div class="fav-img">
+        <svg viewBox="0 0 120 120">
+          <path d="M28 40 L22 8 L48 30z" fill="#c88a5a"/><path d="M92 40 L98 8 L72 30z" fill="#c88a5a"/>
+          <circle cx="60" cy="60" r="34" fill="#e3a874"/>
+          <circle cx="47" cy="58" r="8" fill="#1a1a2e"/><circle cx="73" cy="58" r="8" fill="#1a1a2e"/>
+          <circle cx="49.5" cy="55.5" r="2.8" fill="#fff"/><circle cx="75.5" cy="55.5" r="2.8" fill="#fff"/>
+          <ellipse cx="60" cy="70" rx="3" ry="2" fill="#5a3a2a"/>
+        </svg>
+      </div>
+      <div class="fav-text">
+        <strong id="favName"></strong>
+        <span id="favPlace"></span><br>
+        <em class="rarity" id="favRarity"></em>
+      </div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </section>
+
+  <!-- Achievements -->
+  <section class="card section">
+    <div class="section-head">
+      <h2>Achievements</h2>
+      <a class="link" href="achievements.html">View all
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </a>
+    </div>
+    <div class="badges" id="badges"></div>
+  </section>
+
+  </main>
+
+</div>
+
+<!-- Bottom nav (same as every screen; styles in css/theme.css) -->
+<nav class="nav" aria-label="Main">
+  <a href="home.html#home" class="nav-item" data-tab="home">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12H3l9-9 9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6h6v6"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="collection.html" class="nav-item" data-tab="collection">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19a2 2 0 0 1 2-2h14V4H5a2 2 0 0 0-2 2v13z"/><path d="M19 17v4H5a2 2 0 0 1 0-4"/><path d="M9 7h6"/></svg>
+    <span>Collection</span>
+  </a>
+  <a href="map.html" class="nav-item" data-tab="map">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 7v13l6-3 6 3 6-3V4l-6 3-6-3z"/><path d="M9 4v13M15 7v13"/></svg>
+    <span>Map</span>
+  </a>
+  <a href="quests.html" class="nav-item" data-tab="quests">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+    <span>Quests</span>
+  </a>
+  <a href="profile.html" class="nav-item is-on" aria-current="page" data-tab="profile">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+    <span>Profile</span>
+  </a>
+</nav>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script src="js/nav.js"></script>
+<script src="js/settings-overlay.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/music.js"></script>
+<script src="js/activity.js"></script>
+<script>
+/* ===== Placeholder player data — replace with real data later ===== */
+const player = {
+  name: "Explorer",
+  title: "Kuala Penyu Wanderer",
+  id: "puf48a5sd4af",
+  level: 1,            // worked out from lifetime steps below
+  stepsIntoLevel: 0,   // worked out from lifetime steps below
+  stepsPerLevel: 10000,
+  locations: 5,
+  favourite: { name: "Penyu Pup", place: "Found near Pantai Sawangan", rarity: "RARE" },
+  achievements: [
+    { name: "First Steps",       icon: "mountain", done: true },
+    { name: "Forest Explorer",   icon: "paw",      done: true },
+    { name: "Creature Collector",icon: "star",     done: false, progress: 12, goal: 30 }
+  ]
+};
+
+/* restore edited name (per-device only) */
+try { const saved = localStorage.getItem("lalaangan_name"); if (saved) player.name = saved; } catch(e){}
+
+const $ = id => document.getElementById(id);
+
+/* level follows lifetime steps (js/activity.js): every 10,000 steps is a level */
+const total = Lalaangan.getActivity().lifetime;
+player.level = Math.floor(total.steps / player.stepsPerLevel) + 1;
+player.stepsIntoLevel = total.steps % player.stepsPerLevel;
+
+/* header */
+$("playerName").textContent = player.name;
+$("playerTitle").textContent = player.title;
+$("playerId").textContent = player.id;
+$("levelText").textContent = "LEVEL " + player.level;
+const remaining = player.stepsPerLevel - player.stepsIntoLevel;
+$("stepsToLevel").textContent = remaining.toLocaleString() + " steps to Level " + (player.level + 1);
+requestAnimationFrame(() => setTimeout(() => {
+  $("levelBar").style.width = (player.stepsIntoLevel / player.stepsPerLevel * 100) + "%";
+}, 150));
+
+/* count-up stats */
+function countUp(el, target, decimals = 0, suffix = "") {
+  const dur = 1100, start = performance.now();
+  (function tick(now) {
+    const t = Math.min((now - start) / dur, 1), e = 1 - Math.pow(1 - t, 3);
+    const v = target * e;
+    el.textContent = (decimals ? v.toFixed(decimals) : Math.round(v).toLocaleString()) + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+  })(start);
+}
+countUp($("statSteps"), total.steps);
+countUp($("statDist"), total.distanceKm, 1, " km");
+countUp($("statCal"), total.calories);
+countUp($("statLoc"), player.locations);
+
+/* favourite */
+$("favName").textContent = player.favourite.name;
+$("favPlace").textContent = player.favourite.place;
+$("favRarity").textContent = player.favourite.rarity;
+
+/* achievements */
+const icons = {
+  mountain: '<path d="M3 20l6-10 4 6 3-4 5 8z" fill="currentColor"/><circle cx="16" cy="6" r="2" fill="currentColor"/>',
+  paw: '<circle cx="7" cy="9" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="17" cy="9" r="2" fill="currentColor"/><path d="M12 11c-3 0-5 3-5 5.5S9 20 12 19s5 1 5-2.5S15 11 12 11z" fill="currentColor"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" fill="currentColor"/>'
+};
+$("badges").innerHTML = player.achievements.map(a => `
+  <div class="badge ${a.done ? "done" : ""}">
+    <div class="hex" style="color:${a.done ? "var(--bg)" : "var(--muted)"}">
+      <svg class="shape" viewBox="0 0 68 76">
+        <path d="M34 2 L64 19 V57 L34 74 L4 57 V19 Z"
+          fill="${a.done ? "url(#g)" : "var(--bg-2)"}" stroke="${a.done ? "var(--lantern)" : "var(--card-line)"}" stroke-width="2"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f0a04b"/><stop offset="1" stop-color="#d9822f"/></linearGradient></defs>
+      </svg>
+      <svg class="ico" viewBox="0 0 24 24">${icons[a.icon]}</svg>
+    </div>
+    <b>${a.name}</b>
+    <small>${a.done ? "Complete" : `In progress · ${a.progress}/${a.goal}`}</small>
+    ${a.done ? "" : `<div class="mini"><span style="width:${a.progress / a.goal * 100}%"></span></div>`}
+  </div>`).join("");
+
+/* toast */
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1600);
+}
+
+/* copy ID */
+$("copyBtn").onclick = async () => {
+  try { await navigator.clipboard.writeText(player.id); toast("ID copied!"); }
+  catch(e) { toast("ID: " + player.id); }
+};
+
+/* edit name inline */
+$("editBtn").onclick = () => {
+  const row = $("nameRow"), h1 = $("playerName");
+  const input = document.createElement("input");
+  input.value = h1.textContent; input.maxLength = 16;
+  row.replaceChild(input, h1); $("editBtn").style.display = "none"; input.focus(); input.select();
+  const save = () => {
+    const v = input.value.trim() || player.name;
+    player.name = v; h1.textContent = v;
+    row.replaceChild(h1, input); $("editBtn").style.display = "";
+    try { localStorage.setItem("lalaangan_name", v); } catch(e){}
+    toast("Name saved");
+  };
+  input.onblur = save;
+  input.onkeydown = e => { if (e.key === "Enter") input.blur(); };
+};
+
+/* settings: opens as a popup over this screen (js/settings-overlay.js) */
+$("settingsBtn").onclick = () => Lalaangan.openSettings();
+</script>
+</body>
+</html>

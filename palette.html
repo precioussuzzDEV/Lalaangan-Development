@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lalaangan Colour Palette</title>
+<style>
+  :root { --bg:#f9ecd9; --ink:#4a3426; --sub:#8c7561; --line:#e4cfae; --card:#fff7ea; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Nunito", system-ui, sans-serif; background: var(--bg); color: var(--ink); padding: 32px 16px 64px; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; }
+  .lead { color: var(--sub); margin: 6px 0 28px; }
+  h2 { font-size: 1.1rem; margin: 28px 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .sw { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+  .sw:focus-visible { outline: 2px solid #f0a04b; outline-offset: 2px; }
+  .chip { height: 70px; border-bottom: 1px solid var(--line); }
+  .meta { padding: 8px 10px 10px; }
+  .meta b { display: block; font-size: .9rem; }
+  .meta code { font-size: .85rem; color: var(--sub); }
+  .meta small { display: block; font-size: .75rem; color: var(--sub); margin-top: 2px; }
+  #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: #382019; color: #fff1d4; padding: 8px 16px; border-radius: 99px; font-size: .85rem; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  #toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lalaangan colour palette</h1>
+  <p class="lead">Click any colour to copy its code. Names in brackets are the CSS variables in <code>css/theme.css</code>.</p>
+  <div id="root"></div>
+</main>
+<div id="toast" role="status"></div>
+
+<script>
+const GROUPS = [
+  { title: "Backgrounds & surfaces", colors: [
+    ["#f9ecd9", "Screen background", "--bg"],
+    ["#f3e2c7", "Header band and nav bar", "--bg-soft"],
+    ["#fff7ea", "Cards", "--card"],
+    ["#eed9b8", "Behind the phone frame (laptop)", "--backdrop"],
+    ["#ecdcc0", "Placeholder", "--sil"],
+    ["#d3bb94", "Placeholder detail", "--sil-mark"],
+    ["#cdb591", "Map creature marker", "--creature (map)"]
+  ]},
+  { title: "Text & lines", colors: [
+    ["#4a3426", "Main text (cocoa)", "--ink"],
+    ["#8c7561", "Secondary text", "--sub"],
+    ["#e4cfae", "Borders and lines", "--line"],
+    ["#3b2410", "Text on amber", "--accent-ink"],
+    ["#382019", "\"Tap to play\" text", "loading screen"]
+  ]},
+  { title: "Accents", colors: [
+    ["#f0a04b", "Sunny amber (main accent)", "--accent"],
+    ["#d9822f", "Deep amber", "--lantern-deep (map)"],
+    ["#e8963a", "Legendary rarity", "--r-legendary"],
+    ["#fff1d4", "Loading screen bottom fade", "loading screen"]
+  ]},
+  { title: "Rarity", colors: [
+    ["#8c7561", "Common", "--r-common"],
+    ["#5a9f6e", "Uncommon", "--r-uncommon"],
+    ["#4f8fc4", "Rare", "--r-rare"],
+    ["#e8963a", "Legendary", "--r-legendary"]
+  ]},
+  { title: "Quest categories", colors: [
+    ["#5a9f6e", "Daily", "--daily"],
+    ["#d9822f", "Explore", "--explore"],
+    ["#8a6fd0", "Community", "--community"]
+  ]},
+  { title: "Map & status", colors: [
+    ["#3f9f80", "Jade (health spots)", "--jade (map)"],
+    ["#4f8fc4", "Sky (landmarks)", "--sky (map)"],
+    ["#d9534a", "Danger / delete", "--danger (settings)"]
+  ]}
+];
+
+const root = document.getElementById("root");
+const toast = document.getElementById("toast");
+let timer;
+
+GROUPS.forEach(g => {
+  const h = document.createElement("h2"); h.textContent = g.title; root.appendChild(h);
+  const grid = document.createElement("div"); grid.className = "grid";
+  g.colors.forEach(([hex, name, variable]) => {
+    const b = document.createElement("button");
+    b.className = "sw"; b.type = "button"; b.title = "Copy " + hex.toUpperCase();
+    b.innerHTML = `<div class="chip" style="background:${hex}"></div>
+      <div class="meta"><b>${name}</b><code>${hex.toUpperCase()}</code><small>${variable}</small></div>`;
+    b.onclick = async () => {
+      let ok = true;
+      try { await navigator.clipboard.writeText(hex.toUpperCase()); } catch (e) { ok = false; }
+      toast.textContent = ok ? "Copied " + hex.toUpperCase() : hex.toUpperCase();
+      toast.classList.add("show"); clearTimeout(timer);
+      timer = setTimeout(() => toast.classList.remove("show"), 1400);
+    };
+    grid.appendChild(b);
+  });
+  root.appendChild(grid);
+});
+</script>
+</body>
+</html>
