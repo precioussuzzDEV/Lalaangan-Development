@@ -1,0 +1,21 @@
+/* Slide transition between screens (see js/nav.js) */
+:root { --slide-duration: .26s; } /* keep in sync with SLIDE_MS in nav.js */
+
+html, body { overflow-x: hidden; }
+
+/* Clip the sliding content so it does not spill over the nav bar */
+.home__inner { overflow: hidden; }
+
+@keyframes slide-in-from-right { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes slide-in-from-left  { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes slide-out-to-left   { from { transform: none; } to { transform: translateX(-100%); } }
+@keyframes slide-out-to-right  { from { transform: none; } to { transform: translateX(100%); } }
+
+.slide-in-next  { animation: slide-in-from-right var(--slide-duration) ease-out; }
+.slide-in-prev  { animation: slide-in-from-left  var(--slide-duration) ease-out; }
+.slide-out-next { animation: slide-out-to-left   var(--slide-duration) ease-in forwards; }
+.slide-out-prev { animation: slide-out-to-right  var(--slide-duration) ease-in forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-in-next, .slide-in-prev, .slide-out-next, .slide-out-prev { animation: none; }
+}

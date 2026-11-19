@@ -1,0 +1,106 @@
+/* ============ Home screen ============
+   Colours, phone frame, header band and bottom nav: css/theme.css
+   Level + streak bar: css/status.css */
+.home {
+  background: var(--bg);
+  color: var(--ink);
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 640px) {
+  .home { background: var(--backdrop); }
+}
+
+.home__main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.home__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px 24px;
+}
+.home small { color: var(--sub); font-size: 12px; }
+.home button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* ".home button" above strips every button's background and border, which also
+   wiped the Lv circle. Restore it so it matches Quests and Collection (status.css). */
+.home .status__lv {
+  background: var(--card);
+  border: 1.5px solid var(--accent);
+}
+
+/* room for the hanging "Lv" badge */
+.home .hd { padding-bottom: 20px; }
+/* no header band on Home: only the level and streak stay, floating on the screen */
+.home .hd { background: transparent; border-bottom: 0; }
+
+.creature-wrap { text-align: center; margin-top: 6px; }
+.creature { position: relative; width: 140px; height: 150px; margin: 0 auto 14px; }
+.creature i { position: absolute; background: var(--sil); display: block; }
+.creature__body { left: 40px; top: 0; width: 64px; height: 88px; transform: rotate(3deg); }
+.creature__arm { top: 28px; width: 34px; height: 5px; }
+.creature__arm--l { left: 0; transform: rotate(18deg); }
+.creature__arm--r { right: 0; transform: rotate(-18deg); }
+.creature__leg { top: 100px; width: 10px; height: 30px; }
+.creature__leg--l { left: 52px; }
+.creature__leg--r { left: 82px; }
+.creature-name { margin: 0; font-size: 18px; font-weight: 600; }
+.creature-mood { margin: 4px 0 0; color: var(--sub); font-size: 13px; }
+
+.home .hiding {
+  display: flex; justify-content: space-between; align-items: center;
+  border: 1.5px dashed var(--line); border-radius: 12px;
+  padding: 12px 14px; font-size: 14px; text-align: left;
+}
+
+.card {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.stats { display: flex; justify-content: space-between; }
+.stats strong { display: block; font-size: 26px; font-weight: 600; margin-top: 2px; }
+.stats .right { text-align: right; }
+.goal-row { display: flex; justify-content: space-between; margin: 10px 0 4px; }
+.goal-bar { height: 8px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.goal-bar__fill { height: 100%; width: 0; background: var(--accent); transition: width 0.8s ease; }
+
+.milestones { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+.track { position: relative; flex: 1; height: 6px; background: var(--line); border-radius: 999px; }
+.track__fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.8s ease; }
+.node {
+  position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); border: 1.5px solid var(--sub); transform: translate(-50%, -50%);
+}
+.home .gift {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--bg); border: 1.5px solid var(--accent); font-size: 18px;
+}
+
+.home .place {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  background: var(--card); border: 1.5px solid var(--line);
+  border-radius: var(--radius); padding: 12px 14px;
+}
+.place__text { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.place__text strong { font-family: "Nunito", system-ui, sans-serif; font-size: 15px; font-weight: 600; }
+
+/* Nunito (via --font-hand) for the highlighted values. */
+.home .stats strong,
+.home .creature-name,
+.home .status__badge,
+.home .status__streak,
+.home .hiding {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  letter-spacing: var(--hand-tracking);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goal-bar__fill, .track__fill { transition: none; }
+}

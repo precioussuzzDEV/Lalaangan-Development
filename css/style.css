@@ -1,0 +1,230 @@
+﻿/* ============ Loading screen ============
+   Colours come from css/theme.css */
+:root {
+  --art-back: var(--card);
+  --art-mid: var(--sil);
+  --art-dark: var(--sil-mark);
+}
+
+html, body { height: 100%; }
+
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+  /* no bottom padding here: the nav bar adds the bottom safe area itself */
+}
+
+/* .shell (theme.css) gives it the full screen on a phone, the frame on a laptop */
+.loading-screen {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+/* Artwork background: sharp, fills the whole screen ("cover"). On a phone
+   that is taller than the picture, a little is cropped from the left and
+   right sides, always from the centre. */
+.loading-screen {
+  background: #2a8fd0 url("../assets/images/loading-bg.jpg") center 40% / cover no-repeat;
+  /* own layer: the logo and loader stay inside it, below the Home screen that
+     fades in on top, so everything fades out together */
+  isolation: isolate;
+  z-index: 0;
+}
+/* Cream layer that fades up from the bottom edge into the picture */
+.loading-screen::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    #fff4dd 0%,
+    #fff1d4 30%,
+    rgba(255, 241, 212, 0.75) 55%,
+    rgba(255, 241, 212, 0.35) 78%,
+    rgba(255, 241, 212, 0) 100%
+  );
+}
+
+/* Logo: scales with the screen width, never wider than the phone frame */
+.logo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+.logo img {
+  display: block;
+  width: min(88%, 380px);
+  height: auto;
+}
+
+/* Placeholder artwork */
+.artwork {
+  position: relative;
+  width: min(75vw, 320px);
+  aspect-ratio: 3 / 4;
+  flex: 0 1 auto;
+}
+.art-back {
+  position: absolute;
+  inset: 0;
+  background: var(--art-back);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+}
+.art-card {
+  position: absolute;
+  width: 48%;
+  aspect-ratio: 3 / 4;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+}
+.art-card-top {
+  background: var(--art-dark);
+  top: -8%;
+  right: -12%;
+  transform: rotate(6deg);
+}
+.art-card-bottom {
+  background: var(--art-mid);
+  bottom: -8%;
+  left: -14%;
+  width: 56%;
+  transform: rotate(-25deg);
+}
+
+/* Loader */
+/* Pinned to the bottom of the screen with a fixed height and the bar at its
+   top, so the bar never moves whatever the tip/hint/"Tap to play" lines do. */
+.loader {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  height: 164px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  z-index: 1;          /* above the cream fade, which gives the text its background */
+}
+
+.bar {
+  position: relative;
+  width: 100%;
+  height: 28px;
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--card);
+}
+.bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.2s linear;
+}
+.bar-label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  line-height: 25px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  text-shadow: 0 1px 2px rgba(255, 247, 234, .8); /* readable on the amber fill too */
+}
+
+.tip {
+  min-height: 3em;
+  max-width: 28ch;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: opacity 0.3s ease;
+}
+.tip.is-hidden { opacity: 0; }
+
+/* Hint and "Tap to play" share one fixed-height slot, so swapping them
+   doesn't change the loader's height and move the bar. */
+.hint, .play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.8rem;
+  margin: 0;
+}
+.hint {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+.play {
+  font-family: var(--font-hand);
+  letter-spacing: var(--hand-tracking);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #382019;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation; /* no double-tap zoom when tapping fast */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill, .tip { transition: none; }
+  .play { animation: none; }
+}
+
+/* Next screen: sits on top and fades in while zooming out to normal size once loading is done */
+:root { --fade-duration: 1.5s; } /* keep in sync with FADE_DURATION_MS in main.js */
+
+.next-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  opacity: 0;
+  transform: scale(1.3);
+  pointer-events: none;
+  transition:
+    transform var(--fade-duration) cubic-bezier(0.22, 1, 0.36, 1),
+    opacity var(--fade-duration) ease-in-out;
+}
+.next-screen.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-screen { transition: none; }
+}
+
+/* make the hidden attribute win over display:flex */
+[hidden] { display: none !important; }
+

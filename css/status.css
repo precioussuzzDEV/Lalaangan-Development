@@ -1,0 +1,52 @@
+/* Level + day streak bar, shared by every screen except Profile (see js/status.js).
+   Colours come from css/theme.css. */
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Room for the hanging "Lv" badge when a page title follows (Collection, Quests) */
+.hd .status:not(:last-child) { margin-bottom: 18px; }
+
+/* Level icon on the left: opens Profile */
+.status__lv {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  display: grid;
+  place-items: center;
+  font: inherit;
+  font-size: 20px;
+  color: var(--ink);
+  background: var(--card);
+  cursor: pointer;
+}
+
+.status__badge {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+}
+
+/* Day streak on the right */
+.status__streak {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}

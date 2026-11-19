@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Lalaangan — bottom navigation (the ONLY place its look is defined)
+   Loaded by Home, Collection, Map, Quests and Profile, so the bar is identical
+   on every screen. Colours are written out here on purpose: Map does not load
+   theme.css. To change the nav, change it here.
+   ========================================================================== */
+.nav {
+  position: relative;
+  z-index: 6;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 8px 4px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: #f3e2c7;
+  border-top: 1px solid #e4cfae;
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.2;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 64px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #8c7561;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-item.is-on { color: #4a3426; font-weight: 500; }
